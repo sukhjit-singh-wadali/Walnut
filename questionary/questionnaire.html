@@ -1,0 +1,497 @@
+<html>
+
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-2.0.3.js"></script>
+    <script type="text/javascript" src="js/jquery.countdownTimer.js"></script>
+    <link rel="stylesheet" href="css/questionnaire.css">
+    <link rel="stylesheet" href="css/confirm_submit.css">
+    <link rel="stylesheet" href="css/ripple.css">
+    <script type="text/javascript" src="js/ripple.js"></script>
+    <style>
+        p {
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .button {
+            font-weight: bold;
+            letter-spacing: 3px;
+
+        }
+
+        #container {
+            width: 72%;
+            box-shadow: rgba(0, 0, 0, 0.14) 0px 12px 12px 0px, rgba(0, 0, 0, 0.12) 0px 10px 18px 0px, rgba(0, 0, 0, 0.2) 0px 14px 10px -12px;
+        }
+
+        input[type="radio" i] {
+            margin: 14px 5px -5px 5px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h1>Do you want to submit your answers!</h1>
+            <div class="button" id="confirmsubmit">Sure
+                <link class="rippleJS" />
+            </div>
+
+        </div>
+    </div>
+
+    <div class="scrollbar" id="style-1">
+        <div class="force-overflow">
+            <div style="padding: 1px;background-color: gray;color: white;">
+                <p>WALNUT</p>
+            </div>
+
+
+            <ul id="list"></ul>
+        </div>
+
+    </div>
+    <div></div>
+    <div id="movecontent">
+        <div id="closebtn" style="font-size:30px;cursor:pointer;" onclick="closeNav()">&#9776; </div>
+        <div id="openbtn" style="font-size:30px;cursor:pointer;display: none;margin-left: 10px" onclick="openNav()">&#9776; </div>
+    </div>
+
+    <div id='container'>
+        <div id='title'>
+
+        </div>
+        <br/>
+        <div id="countdown" class="timer"></div>
+        <div id='quiz'> </div><br>
+
+        <div class='button' id='next'>Next
+            <link class="rippleJS" />
+        </div>
+        <div class="trigger" id='submit'>Submit
+            <link class="rippleJS" />
+        </div>
+        <div class='button' id='prev'>Previous
+            <link class="rippleJS" />
+        </div><br>
+
+    </div>
+    <span id="s_timer" style="display:none"></span>
+
+</body>
+
+
+<script>
+    (function($) {
+        var user_id = {
+            userId: localStorage.getItem("userId")
+        }
+//        if (localStorage.getItem("status") === "completed") {
+//            window.location.href = "http://localhost:8000/sukh/sukhjit/walunut-material/walnut-login-page/sections/Sections.html";
+//        }
+
+
+
+        var email = localStorage.getItem("email_id")
+        $('#nav-placeholder').load('http://localhost:8000/walnut/nav.html');
+
+        console.log(localStorage.getItem('user_id_as_token'));
+        var userId = localStorage.getItem('userId');
+
+
+
+
+        $('#submit').on('click', function(e) {
+            e.preventDefault();
+            $("#prev").css("display", "none");
+            $("#next").css("display", "none");
+            $("#submit").css("display", "none");
+        });
+        $('.close-button').on('click', function(e) {
+            e.preventDefault();
+            $("#prev").css("display", "block");
+            $("#next").css("display", "none");
+            $("#submit").css("display", "block");
+        });
+
+
+
+        var bundle_id;
+
+
+        var email_id = JSON.stringify({
+            email: email
+        });
+
+        function getId() {
+
+
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+            xhr.addEventListener("readystatechange", function() {
+                if (this.status === 200) {
+                    var User_id = JSON.parse(xhr.response);
+                    user_id = User_id.message;
+
+
+                }
+            });
+            xhr.open("POST", "http://localhost:8080/questionnaire_submitted");
+            xhr.setRequestHeader("content-type", "application/json");
+            xhr.send(email_id);
+
+
+
+        }
+
+
+        //        var token_value = localStorage.getItem('tokenValue');
+        //        console.log(token_value);
+        var xhr = new XMLHttpRequest();
+        url = "http://localhost:8080/getQuestions?type=basic";
+        xhr.open('GET', url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        //        xhr.setRequestHeader("Authorization", "Bearer " + token_value);
+        xhr.onreadystatechange = function() {
+            if (xhr.status == 200 && this.readyState == 4) {
+                var data = JSON.parse(xhr.responseText);
+                bundle_id = data.bundle_id;
+                getId();
+
+                function formatTime(seconds) {
+                    var h = Math.floor(seconds / 3600),
+                        m = Math.floor(seconds / 60) % 60,
+                        s = seconds % 60;
+                    if (h < 10) h = "0" + h;
+                    if (m < 10) m = "0" + m;
+                    if (s < 10) s = "0" + s;
+                    return h + ":" + m + ":" + s;
+                }
+                var count = data.duration / 1000;
+                var counter = setInterval(timer, 1000);
+
+                function timer() {
+                    count--;
+                    if (count < 0) return clearInterval(counter);
+                    document.getElementById('countdown').innerHTML = formatTime(count);
+
+                }
+
+
+                var questionCounter = 0; //Tracks question number
+                var selections = []; //Array containing user choices
+                var quiz = $('#quiz'); //Quiz div object
+                var questionid = [];
+                //sidebar buttons
+                var l = $('ul');
+
+
+                for (i = 0; i < data.question_set.length; i++) {
+                    var li = $('<div/>');
+                    le = $('<button type="button" class="navBarBtn" onclick="$(this).jump(' + i + ')" id="' + i + 'b" value="' + i + '" ><div id="navTic"><div class="checkedColor" id="' + i + 't">&#10003;</div> </div> Question ' + (i + 1) + ' <link class="rippleJS" /></button><hr class="line" id="' + i + 'l">');
+                    li.append(le)
+                    l.append(li);
+
+                }
+
+
+
+
+
+
+                // Display initial question
+
+
+
+
+                // Click handler for the 'next' button
+                $('#next').on('click', function(e) {
+                    e.preventDefault();
+
+                    // Suspend click listener during fade animation
+
+                    choose();
+
+                    // If no user selection, progress is stopped
+
+                    questionCounter++;
+                    questionid.push(questionCounter);
+                    displayNext();
+
+                });
+                $(function() {
+                    $("#s_timer").countdowntimer({
+                        seconds: data.duration / 1000,
+                        timeUp: timeisUp
+                    });
+
+                    function timeisUp() {
+                        submit();
+                    }
+                });
+
+                // Click handler for the 'prev' button
+                $('#prev').on('click', function(e) {
+                    e.preventDefault();
+
+                    if (questionCounter === (data.question_set.length)) {
+                        questionCounter--;
+                    }
+
+                    choose();
+                    questionCounter--;
+                    displayNext();
+
+                });
+
+                $('#confirmsubmit').on('click', function(e) {
+                    e.preventDefault();
+                    choose();
+                    questionCounter++;
+                    questionid.push(questionCounter);
+                    submit();
+                });
+
+                $.fn.jump = function(msg) {
+                    this.each(function() {
+                        choose();
+                        questionCounter = msg;
+                        displayNext();
+                    })
+                };
+
+                $.fn.coloring = function(colorid) {
+                    this.each(function() {
+                        console.log(colorid);
+                        $("#" + colorid + "t").show();
+                        line = colorid - 1;
+
+
+
+                    })
+                };
+
+
+
+                for (i = 0; i < (data.question_set.length - 1); i++) {
+                    $("#" + i + "l").show();
+                    // Creates and returns the div that contains the questions and 
+                    // the answer selections
+                    function createQuestionElement(index) {
+                        var qElement = $('<div>', {
+                            id: 'question'
+                        });
+                        for (i = (index + 1); i >= 0; i--) {
+                            $("#" + i + "b").css("color", "black");
+                        }
+                        for (j = (index + 1); j < data.question_set.length; j++) {
+                            $("#" + j + "b").css("color", "black");
+                        }
+                        $("#" + index + "b").css("color", "#7B53FC");
+                        var header = $('<h3>Question ' + (index + 1) + ' of ' + (data.question_set.length) + ' : </h3>');
+                        qElement.append(header);
+
+                        var question = $('<p  id=' + (index + 1) + '>').append(data.question_set[index].question);
+                        qElement.append(question);
+
+                        var radioButtons = createRadios(index);
+                        qElement.append(radioButtons);
+
+                        return qElement;
+                    }
+
+                    // Creates a list of the answer choices as radio inputs
+                    function createRadios(index) {
+                        var radioList = $('<ul>');
+                        var item;
+                        var input = '';
+                        var div = '';
+                        for (var i = 0; i < data.question_set[index].options.length; i++) {
+                            item = $('<li><br>');
+                            insideDiv = $('<div class="form-check">');
+                            //                            input = '<div class="form-check">
+                            //<input class="radiobtn" onclick="$(this).coloring(' + index + ')" type="radio" name="answer" id=' + i + ' style="margin-right:12px;margin-left:12px" value=' + data.question_set[index].options[i].optionId + ' />';
+                            //                            div = '<label id="answerText" for=' + i + '>' + data.question_set[index].options[i].option_text + '</label>'
+
+
+                            input = '<input class="radiobtn " onclick="$(this).coloring(' + index + ')" type="radio" name="answer" id=' + i + ' style="margin-right:12px;margin-left:12px" value=' + data.question_set[index].options[i].optionId + ' />';
+                            div = '<label id="answerText" for=' + i + '>' + data.question_set[index].options[i].option_text + '</label>';
+                            input = input + div;
+                            item.append(insideDiv.append(input));
+                            radioList.append(item);
+                        }
+                        return radioList;
+                    }
+
+                    // Reads the user selection and pushes the value to an array
+                    function choose() {
+
+                        selections[questionCounter] = +$('input[name="answer"]:checked').val();
+
+                    }
+
+
+
+                    // Displays next requested element
+                    function displayNext() {
+                        quiz.fadeOut(function() {
+                            $('#question').remove();
+
+                            if (questionCounter < data.question_set.length) {
+                                var nextQuestion = createQuestionElement(questionCounter);
+                                quiz.append(nextQuestion).fadeIn();
+                                if (!(isNaN(selections[questionCounter]))) {
+                                    $('input[value=' + selections[questionCounter] + ']').prop('checked', true);
+                                }
+
+
+
+                                // Controls display of 'prev' button
+                                if (questionCounter === 1) {
+                                    $('#prev').show();
+                                } else if (questionCounter === 0) {
+                                    $('#submit').hide();
+                                    $('#prev').hide();
+                                    $('#next').show();
+                                } else if (questionCounter === (data.question_set.length - 1)) {
+                                    $('#next').hide();
+                                    $('#submit').show();
+                                    $('#prev').show();
+
+
+
+
+                                } else if (questionCounter === (data.question_set.length - 2)) {
+                                    $('#next').show();
+                                    $('#prev').show();
+                                    $('#submit').hide();
+                                }
+                                if (questionCounter > 0 && questionCounter < (data.question_set.length - 1)) {
+                                    $('#submit').hide();
+                                    $('#next').show();
+                                    $('#prev').show();
+                                }
+
+
+
+
+                            }
+
+                        });
+                    }
+
+
+                }
+
+
+
+
+
+
+
+
+                function submit() {
+                    var duration = document.getElementById("s_timer").innerText;
+                    console.log(duration);
+                    var ob = {};
+                    var BasicAnswers = [];
+                    var questions = {};
+
+                    var answers = '';
+
+                    for (var i = 0; i < data.question_set.length; i++) {
+
+
+                        BasicAnswers.push({
+                            questionId: "" + i + "",
+                            answerID: "" + selections[i]
+                        });
+                    }
+                    var json = JSON.stringify({
+                        userId: userId,
+                        duration: duration,
+                        bundle: data.bundle_id,
+                        answers: BasicAnswers
+                    });
+                    console.log(json);
+                    var xhr = new XMLHttpRequest();
+                    xhr.withCredentials = true;
+                    xhr.addEventListener("readystatechange", function() {
+                        if (this.status === 200) {
+                            console.log(xhr.responseText);
+                            window.location.href = "http://localhost:8000/Sections.html";
+
+                        }
+                    });
+
+                    xhr.open("POST", "http://localhost:8080/basicProgramAnswers");
+                    xhr.setRequestHeader("content-type", "application/json");
+                    //                    xhr.setRequestHeader("Authorization", "Bearer " + token_value);
+                    xhr.send(json);
+                    //                    window.location.href = "grid.html";
+                }
+
+
+                displayNext();
+
+
+
+
+
+            };
+
+
+        }
+        xhr.send();
+    })(jQuery);
+
+    function closeNav() {
+        document.getElementById("style-1").style.width = "0";
+        document.getElementById("movecontent").style.marginLeft = "0";
+        document.getElementById("closebtn").style.display = "none";
+        document.getElementById("openbtn").style.display = "block";
+
+    }
+
+    function openNav() {
+        document.getElementById("style-1").style.width = "200";
+        document.getElementById("openbtn").style.display = "none";
+        document.getElementById("closebtn").style.display = "block";
+    }
+
+
+
+    var modal = document.querySelector(".modal");
+    var trigger = document.querySelector(".trigger");
+    var closeButton = document.querySelector(".close-button");
+
+    function toggleModal() {
+        modal.classList.toggle("show-modal");
+        closeNav();
+
+    }
+
+    //    function windowOnClick(event) {
+    //
+    //        if (event.target === modal) {
+    //            toggleModal();
+    ////               $("#prev").css("display", "none");
+    ////            $("#next").css("display", "none");
+    ////            $("#submit").css("display", "none");
+    //        }
+    //    }
+    trigger.addEventListener("click", toggleModal);
+    closeButton.addEventListener("click", toggleModal);
+    //    modal.addEventListener("click", windowOnClick);
+
+</script>
+
+</html>

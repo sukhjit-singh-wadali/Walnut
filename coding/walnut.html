@@ -1,0 +1,883 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Walnut</title>
+    <meta charset="UTF-8">
+
+    <script src="js/jquery-2.1.3.min.js"></script>
+    <link rel="stylesheet" href="css/codemirror.css">
+
+    <script src="js/codemirror.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-select.min.js"></script>
+    <script src="js/matchbrackets.js"></script>
+    <script src="js/javascript.js"></script>
+    <script src="js/matchtags.js"></script>
+    <script src="js/active-line.js"></script>
+    <script src="js/xml.js"></script>
+    <script src="js/htmlmixed.js"></script>
+    <script src="js/css.js"></script>
+    <script src="js/xml-fold.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .CodeMirror {
+            position: relative;
+            overflow: hidden;
+            background: white;
+
+            margin: auto;
+            height: 500px;
+            background: white;
+            border: 1px solid #e5e7e8;
+            border-radius: 2px;
+        }
+
+        hr {
+            margin-top: 0px;
+        }
+
+        .main {
+            background: lightgray;
+            width: 100%;
+        }
+
+        .language-selection {
+            width: 100%;
+            height: 50px;
+            margin: auto;
+            padding: 10px;
+            background: gray;
+        }
+
+        .ace_content {
+            margin-top: 0px;
+        }
+
+        .CodeMirror-gutters {
+            margin-top: 0px;
+            height: 624px;
+            width: 40px;
+            border-right: none;
+        }
+
+        select {
+            background: #fff;
+            border-radius: 3px;
+            padding: 2px;
+            border: 0 solid #9ca3a8;
+            width: 160px;
+
+
+        }
+
+        .btn {
+            background: gray;
+            border: none;
+            color: white;
+        }
+
+        .btn:hover {
+            background: gray;
+            border: none;
+            color: white;
+
+
+        }
+
+        pre {
+            background: white;
+            border: none;
+        }
+
+        .glyphicon {
+            color: white;
+            padding-right: 10px;
+        }
+
+        .user-input {
+            width: 100%;
+            height: 100px;
+            border: 1px solid #e3e3e3;
+            background: white;
+            border-radius: 2px;
+            padding-top: 0px;
+            padding-left: 0px;
+            margin-top: 0px;
+            line-height: 1em;
+            display: none;
+            animation-name: showbox;
+            animation-duration: 1s;
+        }
+
+        @keyframes showbox {
+            0% {
+                height: 0px;
+            }
+
+            100% {
+                height: 100px;
+            }
+
+
+        }
+
+        .question {
+            word-spacing: 2px;
+            background: white;
+            height: auto;
+            padding: 3px;
+        }
+
+        .question p {
+            text-align: left;
+            word-spacing: 2px;
+            font-size: 16px;
+        }
+
+        #run {
+            background: #6bbd00;
+            border: 1px solid #6bbd00;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .editorTop {
+            padding: 6px;
+            height: 45px;
+            background-color: #ebebeb;
+            border-bottom: 1px solid #e5e7e8;
+            background-color: #f0f0f0;
+        }
+
+        .btn-blue {
+            background: #33adff;
+            border: 1px solid #33adff;
+            color: #fff;
+        }
+
+        .filename {
+            font-size: 18px;
+            font-weight: 600;
+            color: #252c33;
+            width: 150px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            line-height: 27px;
+        }
+
+        .floating-wrapper {
+            margin-top: -24px;
+        }
+
+        .nav_value.right.login {
+            display: none;
+        }
+
+        .nav_value.right.home {
+            display: none;
+        }
+
+
+
+        form div.floating-wrapper input[type=text],
+        form div.floating-wrapper input[type=password],
+        form div.floating-wrapper textarea,
+        form div.floating-wrapper input[type=url] {
+            border: 1px solid #bbb;
+            -webkit-box-shadow: inset 0 2px 1px #eee;
+            -moz-box-shadow: inset 0 2px 1px #eee;
+            box-shadow: inset 0 2px 1px #eee;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+            margin-top: 3px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .bl-page .filename-bar .filename-text form .floating-wrapper .filename-cancel {
+            cursor: pointer;
+            line-height: 27px;
+        }
+
+        .filename-bar {
+            width: 75%;
+        }
+
+        .link-3 {
+            font-size: 12px;
+            color: #4c9cdf;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+
+
+        .filename-cancel {
+            cursor: pointer;
+        }
+
+        option {
+            font-weight: normal;
+            display: block;
+            white-space: pre;
+            min-height: 1.2em;
+            padding: 0px 2px 1px;
+        }
+
+        .CodeMirror-line span {
+            font-family: Arial, monospace;
+            font-size: 12px;
+        }
+
+        .float-right {
+            font-size: 12px;
+            height: 20px;
+            padding: 0 15px;
+            line-height: 20px;
+            color: #fff;
+            display: block;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .navigation {
+            background: #323754;
+            height: 50px;
+        }
+
+        #ul_top_hypers li {
+            display: inline;
+            float: right;
+            padding: 15px;
+        }
+
+        .que_no {
+            font-size: 18px;
+        }
+
+        #ul_top_hypers li a {
+            color: white;
+
+        }
+
+        .question_no {
+            font-weight: bold;
+            margin-left: 7px;
+
+        }
+
+
+        .submit span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+        .submit span:after {
+            content: '\00bb';
+
+            /* this content for tick    \2713*/
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: -20px;
+            transition: 0.5s;
+        }
+
+        .submit:hover span {
+            padding-right: 25px;
+        }
+
+        .submit:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+
+        .submit {
+
+            color: white;
+            float: right;
+            font-size: 16px;
+            width: 100px;
+            border: none;
+            /* font-weight: 300; */
+            padding: 5px;
+            border-radius: 4px;
+            background: #84afaf
+        }
+
+
+        @media screen and (min-width: 320px) and (max-width: 768px) {
+            .navbar-default .navbar-nav>li>a:focus,
+            .navbar-default .navbar-nav>li>a:hover {
+                color: #fff;
+                opacity: 1;
+            }
+        }
+
+        @media screen and (min-width: 360px) and (max-width: 374px) {
+            .main_body .bx-wrapper:first-child .bx-controls-direction a {
+                top: 30%;
+                opacity: .5;
+                background-size: auto 100%;
+                padding-left: 45px
+            }
+            .third-slide .left-side {
+
+                border-right: 0px;
+            }
+
+        }
+
+        @media screen and (min-width: 375px) and (max-width: 411px) {
+            .submit {
+
+                margin-top: -35px;
+                margin-right: -90px;
+
+            }
+
+
+        }
+
+        @media screen and (min-width: 412px) and (max-width: 413px) {
+            .submit {
+
+                margin-top: -35px;
+                margin-right: -90px;
+            }
+
+        }
+
+        @media screen and (min-width: 414px) and (max-width: 767px) {
+            .submit {
+
+                margin-top: -35px;
+                margin-right: -90px;
+            }
+
+        }
+
+        @media screen and (min-width: 769px) and (max-width: 1199px) {
+            .submit {
+
+                margin-top: -35px;
+                margin-right: -90px;
+            }
+
+
+        }
+
+    </style>
+    <!--
+    <script>
+        $(document).ready(function() {
+            
+            var question_data={
+                "user_id":"5ae40337e1b07033d797a8"
+            }
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                data:question_data,
+                url: "http://localhost:1337/get_question",
+                success: function(responseData) {
+                     console.log(responseData.result[0].question);
+                    },
+                error: function(response) {
+                    console.log(response)
+
+                }
+
+
+            });
+        });
+
+    </script>
+-->
+
+
+
+</head>
+
+<body>
+    <div id="nav-placeholder">
+    </div>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <br>
+                    <div class="question">
+                        <div class="que_no"><span> Question :</span><span class="question_no"></span></div>
+                        <br>
+                        <p style="margin-left: 10px" class="que_text">
+                        </p>
+                    </div>
+
+                    <hr style="width: 100%">
+
+                    <div class="filename-bar">
+                        <div id="file-name" class="filename float-left col-md-4" title="Click to rename">Untitled File</div>
+                        <div class="float-right ">
+                            <button class="submit"><span>Submit </span></button>
+                        </div>
+
+                        <div class="filename-text float-left" style="display: none">
+                            <form>
+                                <div class="floating-wrapper">
+                                    <input type="text" id="txtbox" value=".java" placeholder="Enter File Name" name="filename" />
+                                    <!--
+
+                                    <input type="text" name="filename" value="">
+-->
+                                    <button type="button" class="btn-blue ">Save</button>
+                                    <a class="filename-cancel link-3 medium-margin-left link-near-button">Cancel</a>
+
+
+                                </div>
+                            </form>
+
+
+                        </div>
+
+
+
+                        <div class="clear">
+                        </div>
+                    </div>
+
+                    <script>
+                        $(document).ready(function() {
+                            //                            $("#nav-placeholder").load("http://localhost:8000/sukh/sukhjit/walunut-material/walnut-login-page/nav.html");
+
+
+
+                            $('#txtbox').keydown(function(event) {
+                                if (event.keyCode == 13) {
+                                    event.preventDefault();
+                                    return false;
+                                }
+                            });
+                            $("#txtbox").keyup(function(event) {
+                                event.preventDefault();
+                                if (event.keyCode === 13) {
+                                    $(".btn-blue").click();
+                                }
+                            });
+                            //                            var user_ids = {
+                            //
+                            //                                "user_id":localStorage.getItem('*user_id#')
+                            //                            }
+
+
+
+
+
+                        });
+
+                        $('.filename').click(function() {
+                            $(".btn-blue").focus();
+
+                            $('.filename-text').css('display', 'block');
+                            $('.filename').css('display', 'none');
+
+                        });
+                        $('.btn-blue').click(function() {
+                            $('.filename-text').css('display', 'none');
+                            $('.filename').css('display', 'block');
+                            var fileName = $('#txtbox').val();
+                            $('.filename').text(fileName);
+
+                        });
+                        $('.filename-cancel').click(function() {
+                            $('.filename-text').css('display', 'none');
+                            $('.filename').css('display', 'block');
+                        });
+
+                    </script>
+
+
+
+
+                </div>
+            </div>
+
+
+            <div class="col-md-9">
+
+
+
+                <div class="col-md-12">
+                    <div class="editorTop">
+
+
+                        <select class="drop" id="lang-selection" style="float: left"> </select>
+
+                        <div class="float-right  hidden" id="save-code" onclick="save('595e40j');return false;">Saved</div>
+
+                    </div>
+                </div>
+
+
+                <div class="main-block">
+
+                    <div class="col-md-12 ">
+
+
+                        <textarea class="editor ui-layout-content" id="main-code" name="html" placeholder="custom code here"></textarea>
+                    </div>
+
+                </div>
+
+                <div class="col-md-12">
+                    <br><br>
+                    <div class="result">
+                        <div style="width: 300px;display:flex">
+                            <input type="checkbox" style="margin-right: 5px" id="testing">
+                            <label for="testing">Use custom input for testing your code</label>
+                        </div>
+                        <textarea class="user-input" ID="area" style="text-align: auto" placeholder="Write your inputs to program..."></textarea>
+                        <br />
+                        <p ID="arsh" class="sh">
+                        </p>
+
+
+                    </div>
+                    <hr>
+
+                </div>
+                <div class="col-md-12">
+
+
+
+                    <button class="btn btn-default btn-sm" id="run" style="float: right"> <span class="glyphicon glyphicon-play"></span>Compile & Run</button>
+                    <br><br><br>
+                    <div class="col-md-12" style="padding: 25px;    border: 1px dashed #ccc;">
+                        <label>Compilation Log</label>
+                        <pre class="showError"></pre>
+
+                        <hr>
+                        <label>Output</label>
+                        <pre class="output">Standard output is empty</pre>
+                        <hr>
+                        <label>Input</label>
+                        <pre class="input">Standard input is empty</pre>
+
+                        <hr>
+                        <table style="width: 100%;">
+                            <tr>
+                                <td>LogId</td>
+                                <td>Time (sec)
+                                </td>
+                                <td>Memory (KB)
+                                </td>
+                                <td>Status
+                                </td>
+                                <td>
+                                    Status Detail
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="logTime"></td>
+                                <td class="runTime"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="col-md-3">
+                <div>
+                    <b>Activity Status</b>
+                    <hr>
+
+                </div>
+                <div style="float: left">Run Count:
+                    <div style="float: right;margin-left: 10px" class="runCount">0</div>
+                </div>
+                <br>
+                <div style="float: left">Last Saved:
+                    <div style="float:right;margin-left: 10px" class="time"></div>
+                    <div style="float: right;margin-left: 5px" class="date"></div>
+
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+
+
+        <div style="display: none">
+
+            <div id="startTime"></div>
+            <div id="stoptime"></div>
+            <div class="diff" value="0" /></div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function(e) {
+            $('#nav-placeholder').load('file:///home/sukhjit/walnut/nav.html');
+
+            var questionid;
+            $.ajax({
+                type: 'get',
+                dataType: 'json',
+                url: "http://localhost:8080/languages",
+                success: function(responseData) {
+                    for (var i = 0; i < responseData.language.length; i++) {
+                        $('#lang-selection').append($('<option>', {
+                            value: responseData.language[i].ext,
+                            text: responseData.language[i].name
+                        }));
+                    }
+
+                }
+            });
+
+            var question_id;
+            $.ajax({
+                type: 'get',
+                dataType: "json",
+
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: "http://localhost:8080/getQuestions?type=programming",
+                success: function(responseData) {
+                    question_id = responseData.id;
+                    $('.que_text').text(responseData.question);
+
+
+                }
+            });
+            var mainEditor = CodeMirror.fromTextArea(document.getElementById("main-code"), {
+                styleActiveLine: true,
+                lineNumbers: true,
+                lineWrapping: true,
+                mode: "javascript",
+                name: "javascript",
+            });
+
+            $("#lang-selection").change(function() {
+
+                var selectedValue = $(this).val();
+                $("#txtbox").val($(this).find("option:selected").attr("value"));
+                $(".filename").text(selectedValue)
+            });
+            $('#testing').on("click", function() {
+                if ($(this).is(':checked')) {
+                    $(".user-input").css("display", "block");
+                } else {
+                    $(".user-input").slideUp(1000);
+                }
+
+
+            });
+            var codeText;
+            var language;
+            var startTime;
+            var endTime;
+
+            $("#run").click(function() {
+                console.log($('.editor').val());
+
+
+                var inpt = $('.user-input').val();
+                console.log(inpt);
+
+
+                codeText = mainEditor.doc.getValue();
+                language = $('#lang-selection option:selected').text();
+                var ext = $('#lang-selection option:selected').val();
+                var fileName = $("#txtbox").val();
+                console.log($('.filename').text());
+                console.log(fileName);
+                var x = $("#txtbox").val();
+                if (codeText === "") {
+                    alert("noting to run")
+                } else if (x.charAt(0) === ".") {
+                    alert("Enter File Name");
+                    $('#txtbox').css('display', 'block');
+                    $("#txtbox").css("background", "#ddd9d9");
+                    $("#txtbox").focus();
+                } else {
+                    var today = new Date();
+
+                    startTime = today.getSeconds();
+                    console.log(startTime);
+                    var objects = {
+                        "language": language,
+                        "stdin": inpt,
+                        "files": [{
+                            "name": fileName,
+                            "content": codeText
+                        }]
+                    };
+
+
+                    function count() {
+                        var countVal = $(".runCount").text();
+                        countVal++;
+                        $(".runCount").text(countVal);
+                        $("#run").click(function() {
+                            $(".runCount").text(countVal);
+
+                        });
+
+                    }
+
+                    function date(today) {
+
+                        var today = new Date();
+                        var dd = today.getDate();
+                        var mm = today.getMonth() + 1; //January is 0!
+                        var yyyy = today.getFullYear();
+                        var hours = today.getHours();
+                        var minutes = today.getMinutes();
+
+
+
+                        var ampm = hours >= 12 ? 'pm' : 'am';
+                        hours = hours % 12;
+                        hours = hours ? hours : 12; // the hour '0' should be '12'
+                        minutes = minutes < 10 ? '0' + minutes : minutes;
+                        var strTime = hours + ':' + minutes + ' ' + ampm;
+                        $('.time').text(strTime);
+
+
+
+
+                        if (dd < 10) {
+                            dd = '0' + dd
+                        }
+
+                        if (mm < 10) {
+                            mm = '0' + mm
+                        }
+
+                        today = mm + '/' + dd + '/' + yyyy;
+                        $('.date').text(today);
+                    }
+                    var Code = {
+                        "language": language,
+                        "stdin": $('.user-input').val(),
+                        "files": [{
+                            "name": fileName,
+                            "content": codeText,
+
+                        }]
+                    }
+
+
+
+                    $.ajax({
+                        type: 'post',
+
+                        data: JSON.stringify(Code),
+                        url: "http://localhost:8080/runner",
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        success: function(responseData) {
+                            console.log(responseData);
+                            var result = JSON.parse(responseData.message);
+                            $(".showError").text(result.stderr);
+                            $(".output").text(result.stdout);
+                            console.log(result.stdout);
+                            var today = new Date();
+                            var endTime = today.getSeconds();
+                            console.log(startTime);
+                            console.log(endTime);
+                            var runTime = (endTime - startTime);
+                            $('.runTime').text(runTime + 1);
+                            $('.input').text($('.user-input').val());
+                            date();
+                            count();
+                        }
+
+
+                    });
+                }
+                return false;
+
+
+
+            });
+
+
+
+
+
+
+            $('.submit').click(function() {
+                console.log( );
+                
+                console.log(question_id);
+                var today = new Date();
+                var startTime = today.getMilliseconds();
+
+
+
+                var ansSubmission = {
+                    "type": "program",
+                    "user_id": localStorage.getItem("userId"),
+                    "language": language,
+                    "question_id": question_id,
+                    "codeText": mainEditor.doc.getValue(),
+                    "output": $('.output').text()
+                };
+                console.log(ansSubmission);
+                $.ajax({
+                    type: 'post',
+                    dataType: "json",
+                    data: JSON.stringify(ansSubmission),
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: "http://localhost:8080/programAnswers",
+                    success: function(responseData) {
+                        console.log(responseData);
+                        $('.que_text').text(responseData.question);
+                        question_id = responseData.id;
+                        codeText = mainEditor.doc.setValue("");
+                        $('.logTime').text(today.getHours() + ':' + today.getMinutes());
+                        if(responseData.message==="complete"){
+                            alert("TestCompleted");
+                            window.location.href="http://localhost:8000/sukh/sukhjit/walunut-material/walnut-login-page/sections/Sections.html";
+                            
+                        }
+                    },
+                    error: function(errorResponse) {
+                        console.log(errorResponse);
+                        if (errorResponse.status === 405) {
+                            
+                            
+                            
+
+                        }
+                    }
+                });
+
+            });
+
+        });
+
+    </script>
+</body>
+
+</html>

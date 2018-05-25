@@ -1,0 +1,354 @@
+<html>
+<title>Sections</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            background-color: white;
+        }
+
+        .nav_value.right.home {
+            display: none;
+        }
+
+        .nav_value.right.login {
+            display: none;
+        }
+
+        .fa {
+            color: #1a73aa
+        }
+
+        span {
+            color: #0073aa;
+            font-weight: bold;
+
+        }
+
+        .box {
+            max-width: 315px;
+            background: white;
+            border-radius: 5px;
+            display: flex;
+            background-color: rgb(255, 255, 255);
+            cursor: pointer;
+            box-shadow: rgba(0, 0, 0, 0.23) 0px 1px 2px;
+            height: 257px;
+            max-width: 315px;
+            min-width: auto;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            flex-direction: column;
+            flex: 1 1 0%;
+            transition: all 0.08s ease-in-out;
+        }
+
+
+
+
+
+
+
+
+        }
+
+        img {}
+
+        .content {
+            border: 1px solid #dbdbdb;
+            width: 100%;
+            height: 193px;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            padding: 10px;
+            background: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuSUxTB2QqXEelWQNVV5mwJs0HVZFBKXFTIrE2izjWxPOQjZ7Q);
+            background-size: cover
+        }
+
+        .box:hover {
+            box-shadow: rgba(0, 0, 0, 0.14) 0px 12px 12px 0px, rgba(0, 0, 0, 0.12) 0px 10px 18px 0px, rgba(0, 0, 0, 0.2) 0px 14px 10px -12px;
+        }
+
+        .box header {}
+
+        .vertical-center {
+            min-height: 100%;
+            /* Fallback for browsers do NOT support vh unit */
+            min-height: 100vh;
+            /* These two lines are counted as one :-)       */
+            display: flex;
+            align-items: center;
+            background-color: white;
+        }
+
+        .css-1iuinr3,
+        [data-css-1iuinr3] {
+            color: rgb(249, 249, 249);
+            float: left;
+            font-size: 14px;
+            background-color: rgb(123, 83, 252);
+            padding: 3px 10px 1px 6px;
+        }
+
+        .css-70c80y,
+        [data-css-70c80y] {
+            width: 4px;
+            height: 25px;
+            float: left;
+            background-color: rgb(123, 83, 252);
+            border-radius: 4px 0px 0px 4px;
+        }
+
+        .css-1myql9a,
+        [data-css-1myql9a] {
+            width: 0px;
+            height: 1px;
+            float: left;
+            border-top: 12px solid rgb(123, 83, 252);
+            border-bottom: 12px solid rgb(123, 83, 252);
+            border-right: 10px solid transparent;
+        }
+
+        .css-ja90be,
+        [data-css-ja90be] {
+            width: 0px;
+            height: 1px;
+            float: left;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            border-right: 10px solid rgb(30, 20, 61);
+        }
+
+        .css-l4qfvw,
+        [data-css-l4qfvw] {
+            color: rgb(249, 249, 249);
+            float: left;
+            font-size: 14px;
+            background-color: rgb(30, 20, 61);
+            padding: 3px 10px 1px 6px;
+        }
+
+        .css-dw8ipn,
+        [data-css-dw8ipn] {
+            width: 0px;
+            height: 1px;
+            float: left;
+            border-top: 12px solid rgb(30, 20, 61);
+            border-bottom: 12px solid rgb(30, 20, 61);
+            border-right: 10px solid transparent;
+        }
+
+        .startBox {
+            background: blue;
+            height: 200px;
+
+        }
+
+
+        .nav_value {
+            text-decoration: none;
+        }
+
+        h2 {
+            margin-top: 29px;
+            font-size: 27px;
+            text-align: center;
+            letter-spacing: 7px;
+            margin-left: 15px;
+            color: black;
+            margin-bottom: 0px;
+        }
+
+        .jumbotron p {
+            text-align: justify;
+            font-size: 18px;
+            line-height: 1.2em;
+        }
+
+
+
+        .bottom-text-walnut {
+            float: right;
+            font-size: 21px;
+            font-weight: bold;
+            color: black;
+            font-family: sans-serif;
+        }
+
+        .mdi-book-variant:before {
+            content: "\F0BF";
+        }
+
+        .mdi-set,
+        .mdi:before {
+            display: inline-block;
+            font: normal normal normal 24px/1 Material Design Icons;
+            font-size: inherit;
+            text-rendering: auto;
+            line-height: inherit;
+
+        }
+
+        .image_outer {
+            overflow: hidden;
+            width: 106.6%;
+            margin-left: -10px;
+        }
+
+        .card_image {
+            transform: scale(1.03);
+
+        }
+
+        .card-footer {
+            margin-top: 15px;
+        }
+
+    </style>
+
+
+</head>
+
+<body>
+    <div id="nav-placeholder"> </div>
+    <div class="jumbotron vertical-center" style="background-color: white">
+        <div class="container" style="width: 80%;margin: auto">
+            <div class="row">
+
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    //    http://localhost:8080/getSections?userId=5af9719491b1fc2a5e6fb30f
+    var user_id = localStorage.getItem("userId");
+    console.log(user_id);
+
+    function formatTime(seconds) {
+        var h = Math.floor(seconds / 3600),
+            m = Math.floor(seconds / 60) % 60,
+            s = seconds % 60;
+        if (h < 10) h = "0" + h;
+        if (m < 10) m = "0" + m;
+        if (s < 10) s = "0" + s;
+        return h + ":" + m + ":" + s;
+    }
+
+    $.ajax({
+        type: 'get',
+        dataType: "json",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        url: "http://localhost:8080/getSections?userId=" + user_id + "",
+        success: function(responseData) {
+            console.log(responseData);
+            for (i = 0; i < responseData.sectionList.length; i++) {
+                var row = $('<div class=row>');
+                var sections = $("  <div class=col-md-4>" +
+                    " <div class=box>" +
+                    "   <div class=box-header>" +
+                    " <img src=images/CISSP_hero.jpg width=100% height=65px style=border-top-left-radius: 5px;   border-top-right-radius: 5px;>" +
+                    " <div class=content id=" + responseData.sectionList[i].name + ">" +
+                    "       <div>" +
+                    "<div data-css-70c80y></div>" +
+                    "<div data-css-1iuinr3>TEST</div>" +
+                    "  <div data-css-1myql9a></div>" +
+                    "    </div>" +
+                    "  <div>" +
+                    "<div data-css-ja90be></div>" +
+                    "<div data-css-l4qfvw>LEVEL " + (i + 1) + "</div>" +
+                    "<div data-css-dw8ipn></div>" +
+                    "  </div>" +
+                    "  <br>" +
+                    "<div>" +
+                    " <div>" +
+                    " <br>" +
+                    "<h2 >" + responseData.sectionList[i].name + "</h2>" +
+                    " </div>" +
+                    "  </div>" +
+                    "<br>" +
+                    "<div class=card-footer>" +
+                    "<div><i class=fa fa-clock-o aria-hidden=true></i>" +
+                    "<span style=margin-left: 10px class=duration" + i + "> </span></div>" +
+
+                    "<div><i class=fa fa-bookmark aria-hidden=true></i>" +
+                    "<span style=margin-left: 10px class=status" + i + ">" + responseData.sectionList[i].status + "</span></div>" +
+                    "</div>" +
+
+
+                    "   </div>" +
+                    "</div>" +
+                    "  </div>" +
+
+                    "</div>");
+
+                $('.row').append(sections);
+
+                $('.duration' + i + '').text(formatTime(responseData.sectionList[i].duration));
+
+                $(document).on('click', '#' + responseData.sectionList[i].name + '', function() {
+                    console.log("clicked");
+//                    window.location.href = "http://localhost:8000/sukh/sukhjit/walunut-material/walnut-login-page/coding/walnut.html";
+
+
+                });
+
+
+            }
+
+        }
+    });
+
+
+    $(document).on('click', '#MCQ', function() {
+                    window.location.href = "questionary/questionnaire.html";
+
+//        if ($('.status0').text() === "pending") {
+//            window.location.href = "questionary/questionnaire.html";
+//        }
+//        if ($('.status0').text() === "completed") {
+//            localStorage.setItem('status', $('.status0').text());
+//
+//        }
+    });
+    $(document).on('click', '#Coding', function() {
+        if ($('.status1').text() === "pending") {
+            window.location.href = "coding/walnut.html";
+        }
+    });
+    //    $(document).on('click', '#Cam', function() {
+    //        console.log("clicked")
+    //        //    if($('.status3').text()==="pending"){
+    //        //        window.location.href="http://localhost:8000/sukh/sukhjit/walunut-material/walnut-login-page/questionary/questionnaire.html";
+    //        //    }
+    //    });
+
+
+
+
+
+
+
+    //    var user_id = {
+    //        userId: localStorage.getItem("userId")
+    //    }
+    $('#nav-placeholder').load('nav.html');
+    //
+    //
+    //    if (!localStorage.getItem('userId')) {
+    //        window.location.href = "http://localhost:8000/sukh/sukhjit/walunut-material/walnut-login-page/login.html";
+    //    }
+
+
+    //    console.log(localStorage.getItem("userId"));
+
+</script>
+
+</html>
