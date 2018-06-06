@@ -246,10 +246,13 @@
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        url: "http://localhost:8080/getSections?userId=" + user_id + "",
+        url: "http://localhost:8080/getSections?userId=" +user_id+"",
         success: function(responseData) {
+            
+            
             console.log(responseData);
             for (i = 0; i < responseData.sectionList.length; i++) {
+                localStorage.setItem(''+responseData.sectionList[i].name+'',responseData.sectionList[i].duration);
                 var row = $('<div class=row>');
                 var sections = $("  <div class=col-md-4>" +
                     " <div class=box>" +
@@ -308,15 +311,14 @@
 
 
     $(document).on('click', '#MCQ', function() {
-                    window.location.href = "questionnaire.html";
 
-//        if ($('.status0').text() === "pending") {
-//            window.location.href = "questionary/questionnaire.html";
-//        }
-//        if ($('.status0').text() === "completed") {
-//            localStorage.setItem('status', $('.status0').text());
-//
-//        }
+        if ($('.status0').text() === "pending") {
+            window.location.href = "questionnaire.html";
+        }
+        if ($('.status0').text() === "completed") {
+            localStorage.setItem('status', $('.status0').text());
+
+        }
     });
     $(document).on('click', '#Coding', function() {
         if ($('.status1').text() === "pending") {

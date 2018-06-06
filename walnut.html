@@ -645,17 +645,17 @@
 
                 }
             });
-
+            var userid = localStorage.getItem('userId');
             var question_id;
             $.ajax({
                 type: 'get',
                 dataType: "json",
 
-                headers: {
+                headers:{
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                url: "http://localhost:8080/getQuestions?type=programming",
+                url: "http://localhost:8080/getQuestions?type=programming&&id=" + userid + "",
                 success: function(responseData) {
                     question_id = responseData.id;
                     $('.que_text').text(responseData.question);
@@ -683,8 +683,6 @@
                 } else {
                     $(".user-input").slideUp(1000);
                 }
-
-
             });
             var codeText;
             var language;
@@ -817,6 +815,8 @@
 
 
             });
+            var timing = localStorage.getItem("Coding");
+
 
 
 
@@ -824,14 +824,11 @@
 
 
             $('.submit').click(function() {
-                console.log( );
-                
+                console.log();
+
                 console.log(question_id);
                 var today = new Date();
                 var startTime = today.getMilliseconds();
-
-
-
                 var ansSubmission = {
                     "type": "program",
                     "user_id": localStorage.getItem("userId"),
@@ -856,18 +853,18 @@
                         question_id = responseData.id;
                         codeText = mainEditor.doc.setValue("");
                         $('.logTime').text(today.getHours() + ':' + today.getMinutes());
-                        if(responseData.message==="complete"){
+                        if (responseData.message === "complete") {
                             alert("TestCompleted");
-                            window.location.href="http://localhost:8000/sukh/sukhjit/walunut-material/walnut-login-page/sections/Sections.html";
-                            
+                            window.location.href = "Sections.html";
+
                         }
                     },
                     error: function(errorResponse) {
                         console.log(errorResponse);
                         if (errorResponse.status === 405) {
-                            
-                            
-                            
+
+
+
 
                         }
                     }

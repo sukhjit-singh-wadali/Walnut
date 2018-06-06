@@ -357,7 +357,6 @@
                                 <a rel="nofollow" href="login.html">Log in</a>
                             </p>
 
-                            <p id="backtoblog"><a href="">&larr; Back to Walnut</a></p>
 
 
 
@@ -402,12 +401,10 @@
                                                 },
 
                                                 success: function(responseData) {
-                                                    console.log(responseData);
-                                                    window.location.href = "http://localhost:8000/sukh/sukhjit/walunut-material/walnut-login-page/login.html";
+                                                    window.location.href = "login.html";
 
                                                 },
                                                 error: function(response) {
-                                                    console.log(response);
                                                     if (response.status === 400) {
                                                         alert("user already exist")
                                                     }
@@ -481,7 +478,6 @@
                                 <div style="width:255px;">
                                     Keep your skills up-to-date. Solve big problem faster and prove your skills, Talent hits a target no one else can hit; Genius hits a target no one else can see.
                                     <br><br>
-                                    <a style="color: #88d89a" href="" target="_blank"><u>Learn more</u></a>
                                 </div>
                             </div>
                         </div>

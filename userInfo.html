@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>UserInfo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        img {
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            border: 3px solid #5f88f9;
+
+        }
+
+        #submit {
+            cursor: pointer;
+
+        }
+
+        .upload_img {
+            display: none;
+            position: fixed;
+            transform: translateY(-43px);
+            margin-left: 13em;
+            color: #8e8e8e;
+        }
+
+
+        .display_upload:hover .upload_img {
+            display: block;
+        }
+        
+
+        #nav-placeholder {
+            width: 103%;
+            margin-left: -15px;
+            margin-top: -15px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+    <div id="nav-placeholder"> </div>
+    <br>
+    <br>
+    <div class="container">
+        <form>
+            <div class="row">
+
+                <div class="display_upload">
+                    <img src=images/plain.jpg height="150px" class="image" width="150px" style="border-radius: 50%;" />
+                    <div style="text-align: center;">
+
+                        <label class="upload_img">Upload  Image
+                       <input type="file" style="display: none"  class="hide_file" onchange="previewFile()">
+                    </label>
+                    </div>
+
+                </div>
+                <br>
+                <div class="input-group input-group-icon">
+                    <input type="text" class="name" placeholder="Full Name" />
+                    <div class="input-icon"><i class="fa fa-user"></i></div>
+                </div>
+                <div class="input-group input-group-icon">
+                    <input type="email" class="email" placeholder="Email Adress" />
+                    <div class="input-icon"><i class="fa fa-envelope"></i></div>
+                </div>
+                <div class="input-group">
+                    <select style="width: 100%" class="language">
+                    <option value="" disabled selected>Language</option>
+                    <option>java</option>
+                    <option>c++</option>
+                    <option>android</option>
+                    <option>angular</option> 
+                    <option>javascript</option>
+                    </select>
+
+                </div>
+                <div class="input-group">
+                    <select style="width: 100%" class="experience">
+                 <option value="" disabled selected>Experience</option>
+                        <option>fresher</option>
+                        <option>1year</option>
+                        <option>2years</option>
+                        <option>3years</option>
+                        <option>4years</option>
+                        <option>5years</option>
+                        <option>More than 5 Years</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group">
+                    <input type="radio" name="gender" value="male" id="gender-male" checked="checked" />
+                    <label for="gender-male">Male</label>
+                    <input type="radio" name="gender"  value="female" id="gender-female" />
+                    <label for="gender-female">Female</label>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <input type="submit" id="submit" value="Submit">
+        </div>
+    </div>
+    <script>
+        $('#nav-placeholder').load('nav.html');
+
+        var preview;
+
+        function previewFile() {
+            preview = document.querySelector('img'); //selects the query named img
+            var file = document.querySelector('input[type=file]').files[0]; //sames as here
+            var reader = new FileReader();
+
+            reader.onloadend = function() {
+                preview.src = reader.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file); //reads the data as a URL
+            } else {
+                preview.src = "images/plain.jpg";
+            }
+        }
+
+        previewFile(); //calls the function named previewFile()
+        var lang;
+        var exp;
+        $('.language').on('change', function() {
+            lang = $(this).find(":selected").val();
+        });
+        $('.experience').on('change', function() {
+            exp = this.value;
+        });
+
+        var userid = localStorage.getItem('userId');
+        console.log(userid);
+        $('#submit').click(function() {
+            var name = $('.name').val();
+            var email = $('.email').val();
+            var gen = $('input[name=gender]:checked').val();
+            if(name === "") {
+                alert("Enter Name");
+            } else if (email === "") {
+                alert("Enter Email");
+            } else if (!validateEmail(email)) {
+                alert("Enter valid Email");
+            } else if (exp === undefined) {
+                alert("Select Experience")
+            } else if (lang === undefined) {
+                alert("Select Language");
+            } else {
+
+
+                var userProfile = {
+                    "name": name,
+                    "email": email,
+                    "language": lang,
+                    "experience": exp,
+                    "userId": userid,
+                    "gender": gen
+                };
+
+
+                $.ajax({
+                    type: 'post',
+                    data: JSON.stringify(userProfile),
+                    url: "http://localhost:8080/userProfile",
+
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    success: function(responseData) {
+                        console.log(responseData.id);
+                        window.location.href = "Sections.html"
+
+                    },
+                    error: function(response) {
+                        console.log("error" + response.status);
+
+                    }
+
+
+                });
+
+            }
+            function validateEmail(sEmail) {
+                var filter = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+                if (filter.test(sEmail)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+
+        });
+        var userId={
+            "userId":userid
+        }
+           $.ajax({
+                    type: 'post',
+                    data: JSON.stringify(userId),
+                    url: "http://localhost:8080/findUser",
+
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    success: function(responseData) {
+                        console.log(responseData.message);
+                        if(responseData.message==="success"){
+                            window.location.href="Sections.html"
+                        }    
+                    },
+                    error: function(response) {
+                        console.log("error" + response.status);
+
+                    }
+
+
+                });
+        
+        
+
+    </script>
+
+
+</body>
+
+</html>

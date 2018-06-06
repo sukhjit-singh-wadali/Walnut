@@ -1,6 +1,5 @@
 <html>
 
-
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="questionary/js/jquery-2.0.3.js"></script>
@@ -29,7 +28,6 @@
         input[type="radio" i] {
             margin: 14px 5px -5px 5px;
         }
-
     </style>
 
 </head>
@@ -94,9 +92,9 @@
         var user_id = {
             userId: localStorage.getItem("userId")
         }
-//        if (localStorage.getItem("status") === "completed") {
-//            window.location.href = "http://localhost:8000/sukh/sukhjit/walunut-material/walnut-login-page/sections/Sections.html";
-//        }
+        //        if (localStorage.getItem("status") === "completed") {
+        //            window.location.href = "http://localhost:8000/sukh/sukhjit/walunut-material/walnut-login-page/sections/Sections.html";
+        //        }
 
 
 
@@ -105,6 +103,7 @@
 
         console.log(localStorage.getItem('user_id_as_token'));
         var userId = localStorage.getItem('userId');
+        console.log("userid"+userId);
 
 
 
@@ -125,6 +124,8 @@
 
 
         var bundle_id;
+        var userid = localStorage.getItem('userId');
+
 
 
         var email_id = JSON.stringify({
@@ -147,16 +148,14 @@
             xhr.open("POST", "http://localhost:8080/questionnaire_submitted");
             xhr.setRequestHeader("content-type", "application/json");
             xhr.send(email_id);
-
-
-
-        }
+    }
+        
 
 
         //        var token_value = localStorage.getItem('tokenValue');
         //        console.log(token_value);
         var xhr = new XMLHttpRequest();
-        url = "http://localhost:8080/getQuestions?type=basic";
+        url = "http://localhost:8080/getQuestions?type=basic&&id="+userid+"";
         xhr.open('GET', url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         //        xhr.setRequestHeader("Authorization", "Bearer " + token_value);
@@ -201,17 +200,6 @@
                     l.append(li);
 
                 }
-
-
-
-
-
-
-                // Display initial question
-
-
-
-
                 // Click handler for the 'next' button
                 $('#next').on('click', function(e) {
                     e.preventDefault();
@@ -391,13 +379,6 @@
 
                 }
 
-
-
-
-
-
-
-
                 function submit() {
                     var duration = document.getElementById("s_timer").innerText;
                     console.log(duration);
@@ -440,12 +421,8 @@
                 }
 
 
+                // Display initial question
                 displayNext();
-
-
-
-
-
             };
 
 
@@ -491,7 +468,6 @@
     trigger.addEventListener("click", toggleModal);
     closeButton.addEventListener("click", toggleModal);
     //    modal.addEventListener("click", windowOnClick);
-
 </script>
 
 </html>

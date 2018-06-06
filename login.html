@@ -366,7 +366,7 @@
 	
                                         <input type="password" name="pwd" id="user_pass" class="input" value="" size="20" required/></label>
                             </p>
-                            <p class="forgetmenot"><label for="rememberme"><input name="rememberme" type="checkbox" id="rememberme" value="forever"  /> Remember Me</label></p>
+                          
                             <p class="submit">
                                 <input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" />
 
@@ -379,21 +379,15 @@
                         <p id="nav">
                             <a rel="nofollow" href="register.html">Register</a> | <a href="">Lost your password?</a>
                         </p>
-
-                        <p id="backtoblog"><a href="">&larr; Back to Walnut</a></p>
-
-
-
-
-
-
-
                         <script type='text/javascript'>
-                            $('#nav-placeholder').load('http://localhost:8000/walnut/nav.html');
+                            $('#nav-placeholder').load('nav.html');
+
+                            
+                            
 
                             var userid_as_token = localStorage.getItem("userId");
                             if (userid_as_token != null) {
-                                window.location.href = 'Sections.html';
+                                window.location.href = 'userInfo.html';
                             }
 
 
@@ -458,7 +452,7 @@
                                             localStorage.setItem('userId', responseData.id);
                                             localStorage.setItem("tokenValue", responseData.success);
                                             console.log(localStorage.getItem("userId"))
-                                            window.location.href = 'Sections.html';
+                                            window.location.href = 'userInfo.html';
                                         },
                                         error: function(response) {
                                             console.log("error" + response.status);
@@ -468,8 +462,6 @@
 
 
                                     });
-
-
                                 }
                                 if ($.isNumeric($("#user_login").val())) {
                                     var loginVal = {
@@ -483,7 +475,7 @@
                                         url: "http://localhost:1337/login",
                                         success: function(responseData) {
                                             localStorage.setItem("dgksdffbbdkvkd$vfkd@$v*ncvndffnd", responseData.token);
-                                            window.location.href = 'Sections.html';
+                                            window.location.href = 'userInfo.html';
                                         },
                                         error: function(response) {
                                             console.log("error" + response.status);
@@ -526,7 +518,6 @@
                             <div style="width:255px;">
                                 Keep your skills up-to-date. Solve big problem faster and prove your skills, Talent hits a target no one else can hit; Genius hits a target no one else can see.
                                 <br><br>
-                                <a style="color:#e14696" href="" target="_blank"><u>Learn more</u></a>
                             </div>
                         </div>
                     </div>
